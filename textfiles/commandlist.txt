@@ -1,0 +1,8 @@
+eightball
+afk
+help
+commands
+leaguerankings
+findusername
+getsummoner
+addrank

@@ -33,31 +33,22 @@ def rank_value(tier, rank, leaguepoints):
     final_value = ((raw_value * 4) - deduction) + (leaguepoints / 100)
     return final_value
 
-def fun(client):
-    # Sherlock Scan
+def leaguerankings(client):
     @client.command()
-    async def findme(ctx, username):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f"Running profile scan on: {username}")
-        os.system(f'python3 sherlock-master/sherlock/sherlock.py {username}')
-        await ctx.send(file=discord.File(f'{username}.txt'))
-        os.remove(f'{username}.txt')
-        await ctx.send("Results have been sent.")
-
-    @client.command()
-    async def getme(ctx, username):
+    async def getsummoner(ctx, username):
         output = ""
         summoner_stat = watcher.summoner.by_name(my_region, f'{username}')
         rank_stat = watcher.league.by_summoner(my_region, summoner_stat['id'])
-        output = f"{summoner_stat['name']} | Level {summoner_stat['summonerLevel']}"
+        summoner_embed = discord.Embed(title=f"{summoner_stat['name']}'s Profile", description=f"Level {summoner_stat['summonerLevel']} Summoner", color=0x00ff00)
+        queue_type = ""
         for x in rank_stat:
-            output = f"{output} \nQueue: {x['queueType']} | {x['tier']} {x['rank']} @ {x['leaguePoints']}LP"
-        await ctx.send(output)
-
-        # command to add username to list for comparison
-        # command to remove username from list
-        # command to show ranks
-        # function to retrieve integer value based on rank
+            print(x['queueType'])
+            if x['queueType'] == "RANKED_SOLO_5x5":
+                queue_type = "SOLO/DUO"
+            elif x['queueType'] == "RANKED_FLEX_SR":
+                queue_type = "FLEX 5v5"
+            summoner_embed.add_field(name=f"Queue | {queue_type}", value=f"{x['tier']} {x['rank']} @ {x['leaguePoints']}LP", inline=False)
+        await ctx.send(embed=summoner_embed)
 
     @client.command()
     async def leaguerankings(ctx):
@@ -74,7 +65,7 @@ def fun(client):
                     summoner_tier = x['tier']
                     summoner_rank = x['rank']
                     summoner_points = x['leaguePoints']
-                elif x['queueType'] == "RANKED_SOLO_SR":
+                else:
                     pass
             summoner_add = [f"{float(rank_value(summoner_tier, summoner_rank, summoner_points))}", f"{summoner_stat['name']}", summoner_tier, summoner_rank, summoner_points]
             ranking_array.append(summoner_add)
@@ -86,13 +77,6 @@ def fun(client):
                 embed_output.add_field(name=f"#{counter} | {summs[1]}", value=f"{summs[2]} {summs[3]} @ {summs[4]}LP", inline=False)
                 counter = counter + 1
         await ctx.send(embed=embed_output)
-
-    @client.command()
-    async def embedtest(ctx):
-        embedVar = discord.Embed(title="League Rankings!", description="A ranking based on SOLO/DUO queue.", color=0x00ff00)
-        embedVar.add_field(name="Field1", value="Value1", inline=False)
-        embedVar.add_field(name="Field2", value="Value2", inline=False)
-        await ctx.send(embed=embedVar)
 
     @client.command()
     async def addrank(ctx, username):

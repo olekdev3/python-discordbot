@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands 
-from ccommands import clear
-from commands.fun import fun
+from commands.moderation import moderation
+from commands.leagueranking import leaguerankings
+from commands.funcommands import eightball, afk
 
 client = commands.Bot(command_prefix = '#')
 command_file = open('command_log.txt','a')
@@ -18,29 +19,11 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-
-
 @client.command()
 async def ping(ctx):
     command_file.write(f'{ctx.author.name} : "ping"')
     await ctx.channel.purge(limit=1)
     await ctx.send(f'Latency: {round(client.latency * 1000)} ms')
-
-
-
-@client.command(aliases=['8ball','eightball'])
-async def _8ball(ctx, *, question):
-    command_file.write(f'{ctx.author.name} : "8ball"')
-    await ctx.send(f'Question: {question}\nAnswer: No, fuck off.')
-
-
-
-@client.command(aliases=['commands', 'commandhelp'])
-async def creed_commands(ctx):
-    command_file.write(f'{ctx.author.name} : "creed_commands"')
-    await ctx.send('**Commands:**\n8ball\nping')
-
-
 
 @client.command()
 async def join(ctx):
@@ -84,24 +67,13 @@ async def show_suggestions(ctx):
     await ctx.send(all_suggestions)
 
 
+moderation(client)
+leaguerankings(client)
+eightball(client)
+afk(client)
 
-@client.command()
-async def afk(ctx):
-    command_file.write(f'{ctx.author.name} : "afk"')
-    display_name = ctx.author.display_name
-    await ctx.channel.purge(limit=1)
-    if display_name[0:5] == '[AFK]':
-        new_name = display_name[5:]
-        await ctx.author.edit(nick=new_name)
-        await ctx.send(f'{new_name} is no longer AFK')
-    else:
-        print( display_name[0:5])
-        await ctx.send(f'{ctx.author.display_name} is now AFK')
-        await ctx.author.edit(nick=f'[AFK]{display_name}')
-
-clear(client)
-fun(client)
 token_file = open('D:/token.txt','r')
 token = token_file.readline()
 token_file.close()
+
 client.run(token)
