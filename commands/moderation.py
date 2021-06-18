@@ -15,7 +15,7 @@ def moderation(client):
         commands = command_file.readlines()
         command_list = ''
         for command in commands:
-            command_list = f'{command_list}{command}\n'
+            command_list = f'{command_list}{command}'
         await ctx.send(command_list)
 
 def suggestions(client):
