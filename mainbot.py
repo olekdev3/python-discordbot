@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands 
-from commands.moderation import moderation
+from commands.moderation import moderation, suggestions
 from commands.leagueranking import leaguerankings
 from commands.funcommands import eightball, afk
 
@@ -39,38 +39,11 @@ async def disconnect(ctx):
     command_file.write(f'{ctx.author.name} : "disconnect"')
     await ctx.voice_client.disconnect()
 
-
-
-@client.command()
-async def suggestion(ctx, *, suggest):
-    command_file.write(f'{ctx.author.name} : "suggestion"')
-    add_suggestion(suggest)
-    await ctx.send('Suggestion added.')
-
-
-
-def add_suggestion(suggestion):
-    f = open("suggestions.txt", "a")
-    f.write(f'\n{suggestion}')
-    f.close()
-
-
-
-@client.command()
-async def show_suggestions(ctx):
-    command_file.write(f'{ctx.author.name} : "show_suggestions"')
-    f = open("suggestions.txt", "r")
-    lines = f.readlines()
-    all_suggestions = ""
-    for line in lines:
-        all_suggestions = f"{all_suggestions}\n{line}"
-    await ctx.send(all_suggestions)
-
-
 moderation(client)
 leaguerankings(client)
 eightball(client)
 afk(client)
+suggestions(client)
 
 token_file = open('D:/token.txt','r')
 token = token_file.readline()

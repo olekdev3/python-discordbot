@@ -2,6 +2,8 @@ import discord, os
 from discord.ext import commands
 from riotwatcher import LolWatcher, ApiError
 
+# getsummoner | leaguerankings | addrank
+
 riot_file = open('D:/riotapi.txt','r')
 riot_token = riot_file.readline()
 

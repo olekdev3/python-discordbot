@@ -1,5 +1,7 @@
 import discord, os
-from discord.ext import commands 
+from discord.ext import commands
+
+# eightball/8ball | afk | findusername
 
 def eightball(client):
     @client.command(aliases=['8ball','eightball'])
