@@ -1,9 +1,11 @@
 import discord, os
 from discord.ext import commands
 from riotwatcher import LolWatcher, ApiError
-import pandas as pd
 
-watcher = LolWatcher('RGAPI-465d03ce-06dc-450a-82e7-76723a719aa2')
+riot_file = open('D:/riotapi.txt','r')
+riot_token = riot_file.readline()
+
+watcher = LolWatcher(riot_token)
 my_region = 'euw1'
 
 def rank_value(tier, rank, leaguepoints):
