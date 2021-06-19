@@ -1,2 +1,2 @@
 # discord-bot
-Discord bot written in Python. 
+Discord bot written in Python.

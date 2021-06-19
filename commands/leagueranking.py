@@ -1,6 +1,7 @@
 import discord, os
 from discord.ext import commands
 from riotwatcher import LolWatcher, ApiError
+from commands.logging import log_command
 
 # getsummoner | leaguerankings | addrank
 
@@ -44,6 +45,7 @@ def rank_value(tier, rank, leaguepoints):
 def leaguerankings(client):
     @client.command()
     async def getsummoner(ctx, username):
+        log_command(f"{ctx.author.display_name} | getsummoner {username}")
         output = ""
         summoner_stat = watcher.summoner.by_name(my_region, f'{username}')
         rank_stat = watcher.league.by_summoner(my_region, summoner_stat['id'])
@@ -60,6 +62,7 @@ def leaguerankings(client):
 
     @client.command()
     async def leaguerankings(ctx):
+        log_command(f"{ctx.author.display_name} | leaguerankings")
         ranking_array = []
         ranking_file = open('textfiles/leagueranking.txt', 'r')
         ranking_summoners = ranking_file.readlines()
@@ -90,6 +93,7 @@ def leaguerankings(client):
 
     @client.command()
     async def addrank(ctx, username):
+        log_command(f"{ctx.author.display_name} | addrank")
         r = open("textfiles/leagueranking.txt", "a")
         r.write(f"{username}\n")
         r.close()

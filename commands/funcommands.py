@@ -1,19 +1,20 @@
 import discord, os
 from discord.ext import commands
-import requests
-import urllib.request
-
+import requests, urllib.request
+from commands.logging import log_command
 
 # eightball/8ball | afk | findusername
 
 def eightball(client):
     @client.command(aliases=['8ball','eightball'])
     async def _8ball(ctx, *, question):
+        log_command(f"{ctx.author.display_name} | 8ball")
         await ctx.send(f'Question: {question}\nAnswer: No, fuck off.')
 
 def afk(client):
     @client.command()
     async def afk(ctx):
+        log_command(f"{ctx.author.display_name} | afk")
         display_name = ctx.author.display_name
         await ctx.channel.purge(limit=1)
         if display_name[0:5] == '[AFK]':
@@ -28,6 +29,7 @@ def afk(client):
 def sherlock(client):
     @client.command()
     async def findusername(ctx, username):
+        log_command(f"{ctx.author.display_name} | findusername")
         await ctx.channel.purge(limit=1)
         await ctx.send(f"Running profile scan on: {username}")
         os.system(f'python3 sherlock-master/sherlock/sherlock.py {username}')
@@ -38,6 +40,7 @@ def sherlock(client):
 def replicate(client):
     @client.command()
     async def botme(ctx):
+        log_command(f"{ctx.author.display_name} | botme")
         user_avatar = ctx.author.avatar_url
         r = requests.get(user_avatar, allow_redirects=True)
         filepath = f'./images/{ctx.author.display_name}.jpeg'

@@ -34,7 +34,9 @@ def main():
     # retrieves discord token
     discord_token_filepath = open('D:/token.txt','r')
     discord_token = discord_token_filepath.readline()
-    discord_token.close()
+    discord_token_filepath.close()
+
+    creed_bot.run(discord_token)
 
 if __name__ == '__main__':
     main()
