@@ -1,9 +1,9 @@
-import discord, os
+import discord, os, random
 from discord.ext import commands
 import requests, urllib.request
 from commands.logging import log_command
 from requests_html import HTMLSession
-import random
+from bs4 import BeautifulSoup
 
 # eightball/8ball | afk | findusername
 
@@ -54,14 +54,21 @@ def replicate(client):
 
 def anime(client):
     @client.command()
-    async def randomanime(ctx):
+    async def randomanime(ctx, *, amount):
         log_command(f"{ctx.author.display_name} | randomanime")
         session = HTMLSession()
-        
-        html_code = 404
-        while html_code == 404:
-            url = f'https://myanimelist.net/anime/{random.randint(0, )}'
+        counter = 0
+        embed_output = discord.Embed(title=f"{amount} Random Anime Titles", description=f"A list of {amount} random animes!", color=0x00ff00)
+        await ctx.send(f'Requested: {amount} animes.')
+        while counter < int(amount):
+            url = f'https://myanimelist.net/anime/{random.randint(0, 16450)}'
             response = session.get(url)
-            html_code = response.status_code
+            if response.status_code == 200:
+                counter += 1
+                soup = BeautifulSoup(urllib.request.urlopen(url))
+                title = str(soup.title.string)
+                title = title.strip('\n')
+                rating = soup.find('div', {'class': 'score-label'}).text.strip()
+                embed_output.add_field(name=f"# {counter} | {title[0:len(title) - 18]}", value=f"Link: {url}\nRating: {rating}\n", inline=False)
 
-        await ctx.send(url)
+        await ctx.send(embed = embed_output)
