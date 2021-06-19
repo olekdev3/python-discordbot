@@ -2,6 +2,8 @@ import discord, os
 from discord.ext import commands
 import requests, urllib.request
 from commands.logging import log_command
+from requests_html import HTMLSession
+import random
 
 # eightball/8ball | afk | findusername
 
@@ -49,3 +51,17 @@ def replicate(client):
         new_image = image_fp.read()
 
         await client.user.edit(avatar=new_image, username=f'{ctx.author.display_name}')
+
+def anime(client):
+    @client.command()
+    async def randomanime(ctx):
+        log_command(f"{ctx.author.display_name} | randomanime")
+        session = HTMLSession()
+        
+        html_code = 404
+        while html_code == 404:
+            url = f'https://myanimelist.net/anime/{random.randint(0, )}'
+            response = session.get(url)
+            html_code = response.status_code
+
+        await ctx.send(url)
