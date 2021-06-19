@@ -79,6 +79,34 @@ def anime(client):
                 
         await ctx.send(embed = embed_output)
 
+def manga(client):
+    @client.command()
+    async def mangarandom(ctx, *, amount):
+        log_command(f"{ctx.author.display_name} | mangarandom {amount}")
+        session = HTMLSession()
+        counter = 0
+        embed_output = discord.Embed(title=f"{amount} Random Manga Titles", description=f"A list of {amount} random mangas!", color=0x00ff00)
+        embed_output.set_author(name=ctx.author.display_name,
+        icon_url=ctx.author.avatar_url)
+        embed_output.set_thumbnail(url='https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png')
+        embed_output.set_footer(text=f"Information requested by: {ctx.author.display_name}")
+        await ctx.send(f'Requested: {amount} mangas.')
+        while counter < int(amount):
+            url = f'https://myanimelist.net/manga/{random.randint(0, 16450)}'
+            response = session.get(url)
+            if response.status_code == 200:
+                counter += 1
+                soup = BeautifulSoup(urllib.request.urlopen(url))
+                title = str(soup.title.string)
+                title = title.strip('\n')
+                rating = soup.find('div', {'class': 'score-label'}).text.strip()
+                embed_output.add_field(name=f"{title[0:len(title) - 26]}", value=f"{url}", inline=True)
+                embed_output.add_field(name="Rating", value=f"{rating}", inline=True)
+                embed_output.add_field(name = chr(173), value = chr(173))
+                
+        await ctx.send(embed = embed_output)
+        
+
 def getweather(client):
     @client.command()
     async def getweather(ctx, *, city):
