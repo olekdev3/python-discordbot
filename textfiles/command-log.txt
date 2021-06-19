@@ -8,3 +8,11 @@ c00k1e | addsuggestion
 c00k1e | suggestions
 c00k1e | addsuggestion
 c00k1e | suggestions
+c00k1e | randomanime
+c00k1e | randomanime
+c00k1e | clear 50
+c00k1e | randomanime
+c00k1e | randomanime
+c00k1e | randomanime
+c00k1e | randomanime
+c00k1e | randomanime

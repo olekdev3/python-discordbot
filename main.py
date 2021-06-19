@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands 
 from commands.moderation import moderation, suggestions
 from commands.leagueranking import leaguerankings
-from commands.funcommands import eightball, afk, replicate
+from commands.funcommands import eightball, afk, replicate, anime
 
 def main():
 
@@ -30,6 +30,7 @@ def main():
     afk(creed_bot)
     suggestions(creed_bot)
     replicate(creed_bot)
+    anime(creed_bot)
 
     # retrieves discord token
     discord_token_filepath = open('D:/token.txt','r')
