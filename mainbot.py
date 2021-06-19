@@ -7,18 +7,6 @@ from commands.funcommands import eightball, afk, replicate
 client = commands.Bot(command_prefix = '#')
 command_file = open('command_log.txt','a')
 
-@client.event
-async def on_ready():
-    print('Bot is ready.')
-
-@client.event
-async def on_member_join(member):
-    print(f'{member} has joined the server.')
-
-@client.event
-async def on_member_remove(member):
-    print(f'{member} has left the server.')
-
 @client.command()
 async def ping(ctx):
     command_file.write(f'{ctx.author.name} : "ping"')
@@ -31,8 +19,6 @@ async def join(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
     await ctx.send(f'Joined {ctx.author.voice.channel}')
-
-
 
 @client.command()
 async def disconnect(ctx):
