@@ -1,8 +1,8 @@
 import discord, os, random
 from discord.ext import commands
-import requests, urllib.request
+import requests, urllib.request, json
 from commands.logging import log_command
-from requests_html import HTMLSession
+from requests_html import HTMLSession, AsyncHTMLSession
 from bs4 import BeautifulSoup
 
 # eightball/8ball | afk | findusername
@@ -55,10 +55,14 @@ def replicate(client):
 def anime(client):
     @client.command()
     async def randomanime(ctx, *, amount):
-        log_command(f"{ctx.author.display_name} | randomanime")
+        log_command(f"{ctx.author.display_name} | randomanime {amount}")
         session = HTMLSession()
         counter = 0
         embed_output = discord.Embed(title=f"{amount} Random Anime Titles", description=f"A list of {amount} random animes!", color=0x00ff00)
+        embed_output.set_author(name=ctx.author.display_name,
+        icon_url=ctx.author.avatar_url)
+        embed_output.set_thumbnail(url='https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png')
+        embed_output.set_footer(text=f"Information requested by: {ctx.author.display_name}")
         await ctx.send(f'Requested: {amount} animes.')
         while counter < int(amount):
             url = f'https://myanimelist.net/anime/{random.randint(0, 16450)}'
@@ -69,6 +73,42 @@ def anime(client):
                 title = str(soup.title.string)
                 title = title.strip('\n')
                 rating = soup.find('div', {'class': 'score-label'}).text.strip()
-                embed_output.add_field(name=f"# {counter} | {title[0:len(title) - 18]}", value=f"Link: {url}\nRating: {rating}\n", inline=False)
-
+                embed_output.add_field(name=f"{title[0:len(title) - 18]}", value=f"{url}", inline=True)
+                embed_output.add_field(name="Rating", value=f"{rating}", inline=True)
+                embed_output.add_field(name = chr(173), value = chr(173))
+                
         await ctx.send(embed = embed_output)
+
+def getweather(client):
+    @client.command()
+    async def getweather(ctx, *, city):
+        openweather_token_filepath = open('D:/openweather.txt','r')
+        openweather_token = openweather_token_filepath.readline()
+        openweather_token_filepath.close()
+
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        complete_url = base_url + "appid=" + openweather_token + "&q=" + city
+        response = requests.get(complete_url)
+        print(response.status_code)
+        response_json = response.json()
+
+        if response_json["cod"] != "404":
+
+            y = response_json["main"]
+            current_temperature = y["temp"] - 273
+            current_pressure = y["pressure"]
+            current_humidity = y["humidity"]
+            z = response_json["weather"]
+            weather_description = z[0]["description"]
+
+            embed_output = discord.Embed(title=f"Weather of {city}", description=f"{weather_description}", color=0x00ff00)
+            embed_output.set_author(name=ctx.author.display_name,
+            icon_url=ctx.author.avatar_url)
+            embed_output.set_thumbnail(url='https://pbs.twimg.com/profile_images/1173919481082580992/f95OeyEW_400x400.jpg')
+            embed_output.set_footer(text=f"Information requested by: {ctx.author.display_name}")
+            embed_output.add_field(name=f"Temperature", value=f"{current_temperature}", inline=True)
+            embed_output.add_field(name=f"Pressure", value=f"{current_pressure}", inline=True)
+            embed_output.add_field(name=f"Humidity", value=f"{current_humidity}", inline=True)
+            await ctx.send(embed=embed_output)
+        else:
+            await ctx.send("City not found.")

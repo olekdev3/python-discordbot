@@ -1,8 +1,10 @@
-eightball
-afk
-help
-commands
-leaguerankings
-findusername
-getsummoner
-addrank
+eightball - You know what it does
+afk - Set/Unset AFK Status
+help - Gets you some help
+commands - Displays commands
+leaguerankings - Displays the current rankings for League of Legends
+findusername <username> - Finds your username online
+getsummoner <username> - Gets your League of Legends account
+addrank <username>- Adds your summoner to the rankings
+randomanime <number> - Retrieves a specified amount of random animes
+botme - Turns the bot into you
