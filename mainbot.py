@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands 
 from commands.moderation import moderation, suggestions
 from commands.leagueranking import leaguerankings
-from commands.funcommands import eightball, afk
+from commands.funcommands import eightball, afk, replicate
 
 client = commands.Bot(command_prefix = '#')
 command_file = open('command_log.txt','a')
@@ -44,6 +44,7 @@ leaguerankings(client)
 eightball(client)
 afk(client)
 suggestions(client)
+replicate(client)
 
 token_file = open('D:/token.txt','r')
 token = token_file.readline()
