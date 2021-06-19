@@ -45,10 +45,11 @@ def replicate(client):
         log_command(f"{ctx.author.display_name} | botme")
         user_avatar = ctx.author.avatar_url
         r = requests.get(user_avatar, allow_redirects=True)
-        filepath = f'./images/{ctx.author.display_name}.jpeg'
+        filepath = f'./images/new_image.jpeg'
         open(filepath, 'wb').write(r.content)
         image_fp = open(filepath, 'rb')
         new_image = image_fp.read()
+        image_fp.close()
 
         await client.user.edit(avatar=new_image, username=f'{ctx.author.display_name}')
 
@@ -110,6 +111,7 @@ def manga(client):
 def getweather(client):
     @client.command()
     async def getweather(ctx, *, city):
+        log_command(f"{ctx.author.display_name} | getweather {city}")
         openweather_token_filepath = open('D:/openweather.txt','r')
         openweather_token = openweather_token_filepath.readline()
         openweather_token_filepath.close()
@@ -140,3 +142,17 @@ def getweather(client):
             await ctx.send(embed=embed_output)
         else:
             await ctx.send("City not found.")
+
+def textchange(client):
+    @client.command()
+    async def funkytext(ctx, *, message):
+        output = ''
+        i = True  # capitalize
+        for char in message:
+            if i:
+                output += char.upper()
+            else:
+                output += char.lower()
+            if char != ' ':
+                i = not i
+        await ctx.send(output)

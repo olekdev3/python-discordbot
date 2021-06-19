@@ -66,3 +66,6 @@ c00k1e | mangarandom 5
 c00k1e | mangarandom 5
 c00k1e | commands
 c00k1e | leaguerankings
+c00k1e | botme
+c00k1e | afk
+semaJ | botme
