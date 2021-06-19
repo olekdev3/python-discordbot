@@ -1,5 +1,8 @@
 import discord, os
 from discord.ext import commands
+import requests
+import urllib.request
+
 
 # eightball/8ball | afk | findusername
 
@@ -31,3 +34,15 @@ def sherlock(client):
         await ctx.send(file=discord.File(f'{username}.txt'))
         os.remove(f'{username}.txt')
         await ctx.send("Results have been sent.")
+
+def replicate(client):
+    @client.command()
+    async def botme(ctx):
+        user_avatar = ctx.author.avatar_url
+        r = requests.get(user_avatar, allow_redirects=True)
+        filepath = f'./images/{ctx.author.display_name}.jpeg'
+        open(filepath, 'wb').write(r.content)
+        image_fp = open(filepath, 'rb')
+        new_image = image_fp.read()
+
+        await client.user.edit(avatar=new_image, username=f'{ctx.author.display_name}')
