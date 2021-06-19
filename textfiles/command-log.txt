@@ -64,3 +64,5 @@ c00k1e | randomanime 5
 Yamata2 | botme
 c00k1e | mangarandom 5
 c00k1e | mangarandom 5
+c00k1e | commands
+c00k1e | leaguerankings

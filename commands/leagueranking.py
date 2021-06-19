@@ -89,7 +89,6 @@ def leaguerankings(client):
                 embed_output.add_field(name=f"#{counter} | {summs[1]}", value=f"{summs[2]} {summs[3]} @ {summs[4]}LP", inline=False)
                 counter = counter + 1
         await ctx.send(embed=embed_output)
-        await ctx.send(ranking_array)
 
     @client.command()
     async def addrank(ctx, username):
